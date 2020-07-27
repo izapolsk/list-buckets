@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "list_buckets"
+version = "0.0.1"
+description = "lists aws buckets"
+authors = ["Ievgen Zapolskyi"]
+
+
+[tool.poetry.dependencies]
+wrapanapi = "^3.5.7"
+Flask = "^1.1.2"
+
+
+[build-system]
+requires = ["poetry>=1.0.9"]
+build-backend = "poetry.masonry.api"
+
