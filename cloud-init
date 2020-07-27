@@ -22,7 +22,6 @@ write_files:
     export REGION=us-east-1
     cd /app
     poetry run flask run --host 0.0.0.0 --port 80
-
   path: /usr/bin/run_flask.sh
   permissions: '0755'
 
