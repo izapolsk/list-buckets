@@ -1,0 +1,49 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+package_upgrade: true
+
+packages:
+ - python3
+ - python3-pip
+ - git
+ - gcc
+ - python3-devel
+ - libcurl-devel
+ - libxml2-devel
+ - openssl-devel
+
+write_files:
+- content: |
+    #!/usr/bin/bash
+
+    export PATH=${PATH}:/usr/local/bin
+    export FLASK_APP=app.py
+    export REGION=us-east-1
+    cd /app
+    poetry run flask run --host 0.0.0.0 --port 80
+
+  path: /usr/bin/run_flask.sh
+  permissions: '0755'
+
+write_files:
+- content: |
+    [Unit]
+    Description=Temporary Flask HTTP Server.
+    [Service]
+    Type=simple
+    ExecStart=/bin/bash /usr/bin/run_flask.sh
+
+    [Install]
+    WantedBy=multi-user.target
+  path: /etc/systemd/system/flask.service
+  permissions: '0644'
+
+runcmd:
+ - [ sh, -c, "pip3 install poetry" ]
+ - [ sh, -c, "mkdir /app" ]
+ - [ sh, -c, "git clone https://github.com/izapolsk/list-buckets.git /app" ]
+ - [ sh, -c, "cd /app; export PYCURL_SSL_LIBRARY=openssl; poetry install" ]
+ - systemctl daemon-reload
+ - systemctl start flask
+ - systemctl enable flask
