@@ -1,0 +1,13 @@
+[
+  {
+    "portMappings": [
+      {
+        "hostPort": 80,
+        "protocol": "tcp",
+        "containerPort": 80
+      }
+    ],
+    "image": "096079444332.dkr.ecr.sa-east-1.amazonaws.com/fargate-test-app:latest",
+    "name": "fargate-test-app"
+  }
+]
