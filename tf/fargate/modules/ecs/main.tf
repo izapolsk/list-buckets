@@ -17,4 +17,19 @@ resource "aws_ecs_service" "fargate-app-service" {
   name = "fargate-app-service"
   launch_type = "FARGATE"
   task_definition = aws_ecs_task_definition.fargate-task-definition.arn
+  desired_count   = 2
+  scheduling_strategy = "REPLICA"
+  cluster  = aws_ecs_cluster.fargate-test-app.id
+
+  network_configuration {
+   security_groups  = [var.http-sg-id]
+   subnets          = var.subnet_ids
+   assign_public_ip = false
+ }
+
+ load_balancer {
+   target_group_arn = var.target_group_arn
+   container_name   = "fargate-test-app"
+   container_port   = 80
+ }
 }

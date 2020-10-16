@@ -1,4 +1,5 @@
-variable "app-name" {
-  description = "App instance id for elb"
+variable "fargate-app-name" {
+  description = "Application Name"
   type        = string
+  default     = "fargate-test-app"
 }
