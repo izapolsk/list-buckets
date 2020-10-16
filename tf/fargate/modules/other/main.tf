@@ -17,7 +17,7 @@ data "aws_subnet" "subnet" {
 
 
 resource "aws_security_group" "http-ssh" {
-  name        = "http-ssh"
+  name        = "http-ssh-${var.env}"
   description = "Allow HTTP and SSH traffic to app"
   vpc_id      = data.aws_vpc.default.id
 
@@ -50,7 +50,7 @@ resource "aws_security_group" "http-ssh" {
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
-  name = "test-app-target-group"
+  name = "test-app-target-group-${var.env}"
   port = 80
   protocol = "HTTP"
   vpc_id = data.aws_vpc.default.id
@@ -80,7 +80,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 resource "aws_alb" "test-app-alb" {
-  name               = "test-app-alb"
+  name               = "test-app-alb-${var.env}"
   internal           = false
   load_balancer_type = "application"
   subnets            = data.aws_subnet.subnet.*.id
@@ -88,6 +88,6 @@ resource "aws_alb" "test-app-alb" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "test-app-alb"
+    Name = "test-app-alb-${var.env}"
   }
 }

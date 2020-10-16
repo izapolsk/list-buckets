@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "fargate-test-app" {
-  name = "fargate_test_app"
+  name = "fargate_test_app-${var.env}"
 }
 
 resource "aws_ecs_task_definition" "fargate-task-definition" {
@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "fargate-task-definition" {
 }
 
 resource "aws_ecs_service" "fargate-app-service" {
-  name = "fargate-app-service"
+  name = "fargate-app-service-${var.env}"
   launch_type = "FARGATE"
   task_definition = aws_ecs_task_definition.fargate-task-definition.arn
   desired_count   = 2
@@ -29,7 +29,7 @@ resource "aws_ecs_service" "fargate-app-service" {
 
  load_balancer {
    target_group_arn = var.target_group_arn
-   container_name   = "fargate-test-app"
+   container_name   = "fargate-test-app--${var.env}"
    container_port   = 80
  }
 }

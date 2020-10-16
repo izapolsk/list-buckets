@@ -12,6 +12,7 @@ terraform {
 module "fargate-app-repo" {
   source = "./modules/ecr"
   fargate-app-name = var.fargate-app-name
+  env = var.env
 }
 
 #2. image -> manually via docker build/tag
@@ -25,11 +26,13 @@ module "fargate-app-cluster" {
   http-sg-id = module.fargate-app-alb.http-sg-id
   subnet_ids = module.fargate-app-alb.subnet_ids
   target_group_arn = module.fargate-app-alb.target_group_arn
+  env = var.env
 }
 
 #5. alb
 module "fargate-app-alb" {
   source = "./modules/other"
+  env = var.env
 }
 
 
